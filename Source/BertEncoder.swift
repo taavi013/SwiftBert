@@ -278,7 +278,7 @@ func reversebytes(data:Data) -> Data{
     let count = data.count
 
     mdata.withUnsafeMutableBytes { (i8ptr: UnsafeMutablePointer<UInt8>) in
-        for i in 0..<count/2-1 {
+        for i in 0..<count/2 {
             let sym = i8ptr[count-i-1]
             i8ptr[count-i-1] = i8ptr[i]
             i8ptr[i] = sym

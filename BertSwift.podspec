@@ -27,7 +27,7 @@ spec.watchos.deployment_target = "2.0"
 
 spec.source_files     = "Source/*.swift"
 
-spec.pod_target_xcconfig = { 'SWIFT_VERSION' => '4.0' }
+spec.pod_target_xcconfig = { 'SWIFT_VERSION' => '4.0', 'GCC_PREPROCESSOR_DEFINITIONS' => 'APPLICATION_EXTENSION_API_ONLY=YES'  }
 spec.requires_arc = true
 
 spec.dependency 'BigInt', '3.1.0'
