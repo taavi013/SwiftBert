@@ -6,6 +6,7 @@
 //  Copyright © 2017 pankaj soni. All rights reserved.
 //
 
+import Swift
 import BigInt
 
 public class BertEncoder: Bert {
@@ -124,6 +125,8 @@ public class BertEncoder: Bert {
     }
     
     private func encodeBigInteger(bigInt: BigInt){
+        // https://stackoverflow.com/questions/30195267/how-to-byte-reverse-nsdata-output-in-swift-the-littleendian-way 
+        // Erlang external BigInt is encoded with least significant bytes first
         
         let bytes = bigInt.magnitude.serialize()
         let count = bytes.count
@@ -139,7 +142,7 @@ public class BertEncoder: Bert {
         var sign: UInt8 = bigInt.sign == BigInt.Sign.minus ? 1 : 0
         
         data.append(&sign, count: 1)
-        data.append(bytes)
+        data.append(reversebytes(data: bytes))
     }
     
     private func encodeAtom(atom: String) {
@@ -270,4 +273,16 @@ public class BertEncoder: Bert {
     }
 }
 
+func reversebytes(data:Data) -> Data{
+    var mdata = data
+    let count = data.count
 
+    mdata.withUnsafeMutableBytes { (i8ptr: UnsafeMutablePointer<UInt8>) in
+        for i in 0..<count/2-1 {
+            let sym = i8ptr[count-i-1]
+            i8ptr[count-i-1] = i8ptr[i]
+            i8ptr[i] = sym
+        }
+    }
+    return mdata
+}
